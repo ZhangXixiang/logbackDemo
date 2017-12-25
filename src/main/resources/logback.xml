@@ -1,0 +1,35 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Pattern>%d{HH:mm:ss.SSS} %-5level [%thread]  %logger{64} - %msg %caller{1}%n
+            </Pattern --><!-- caller为引入调用日志输出位置 -->
+            <pattern>%d{HH:mm:ss.SSS} [%t] [%level] %logger{40} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>/tmp/pmt_app-api.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
+            <maxHistory>120</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%level] %logger{50} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- Turn off third party chatter -->
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.springframework.jdbc" level="INFO"/>
+    <logger name="org.jasig" level="ERROR"/>
+    <logger name="org.apache.ibatis" level="INFO"/>
+    <logger name="org.mybatis" level="INFO"/>
+    <logger name="com.ibatis" level="INFO" />
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="file"/>
+    </root>
+</configuration>
